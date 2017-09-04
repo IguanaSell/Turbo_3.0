@@ -1,0 +1,77 @@
+
+
+
+{% if customer %} {% assign digest = customer.id | append:customer.email | append:'7305328c-50fc-4eab-b21c-9c871c2e280f' | md5 %} {% endif %}
+
+<script type="text/javascript">
+window.sloyalty = window.sloyalty || {};
+window.sloyalty.shop = 'www.iguanasell.de';
+
+window.sloyalty.customer_id = '{% if customer %}{{ customer.id }}{% endif %}';
+window.sloyalty.digest = '{% if customer %}{{ digest }}{% endif %}';
+
+</script>
+
+
+
+
+
+{% assign catalog = '//s.sloyalty.com/site_media/static/jsi18n/de/catalog.js' %}
+{{ catalog | script_tag }}
+  
+
+
+{% if customer %}
+{% assign digest = customer.id | append:customer.email | append:'7305328c-50fc-4eab-b21c-9c871c2e280f' | md5 %}
+
+<div class="sloyalty-loyalty-widget"
+     data-digest="{{ digest }}"
+     data-shop="www.iguanasell.de"
+     data-version="1"
+     data-widget-css="bottom:0px;left:20px;"
+     data-overlay-css=""
+     data-customer="{{ customer.id }}"></div>
+{% else %}
+<div class="sloyalty-loyalty-widget"
+     data-shop="www.iguanasell.de"
+     data-version="1"
+     data-widget-css="bottom:0px;left:20px;"
+     data-overlay-css=""></div>
+{% endif %}
+
+
+
+
+
+<div class="sloyalty-referral-widget"
+     data-shop="www.iguanasell.de"
+     data-customer="{% if customer %}{{ customer.id }}{% endif %}"></div>
+
+
+
+
+
+
+{% if customer %}
+{% assign digest = customer.id | append:customer.email | append:'7305328c-50fc-4eab-b21c-9c871c2e280f' | md5 %}
+
+<div class="sloyalty-standalone-share-widget"
+     data-shop="www.iguanasell.de"
+     data-customer="{{ customer.id }}"
+     data-digest="{{ digest }}"></div>
+{% else %}
+<div class="sloyalty-standalone-share-widget"
+     data-shop="www.iguanasell.de"
+     data-customer=""></div>
+{% endif %}
+
+
+
+
+
+
+<div class="sloyalty-fans-widget"
+     data-shop="www.iguanasell.de"
+     data-customer="{% if customer %}{{ customer.id }}{% endif %}"></div>
+
+

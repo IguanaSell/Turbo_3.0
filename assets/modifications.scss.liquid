@@ -1,0 +1,449 @@
+/* ----- CAMBIO: ESTILOS FILTER MENU ----- */
+  
+
+  .filter-group .selected div {
+      border-left: solid 9px {{ settings.sidebar_nav_color_hover }};
+  }
+
+  .collection-name a {
+      border-left: none!important;
+  }
+
+  .collection-name a:hover {
+      border-left: solid 2px!important;
+  }
+  
+  .active.selected .collection-name a {
+    border-left: none;
+  }
+
+  .filter-group {
+      position: relative;
+      padding: 0;
+  }
+
+  .filter-group .filter-clear {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      border-radius: 10px;
+      padding: 0 5px;
+      background-color: #EEE;
+      text-decoration: none;
+  }
+
+  .filter-group .filter-clear:hover {
+      background-color: #DDD;
+  }
+
+  .filter-group li a {
+      display: inline;
+      left: 1px;
+  }
+
+  /* Para que en la vista movil los botones clear y view all se vean mejor */
+  a.filter-clear {
+    margin-right: 20px;
+    @media only screen and (max-width: 768px){
+      margin-top: -5px;
+    }
+  }
+  
+  
+/* Precio más grande */
+  .current_price{
+    font-size:larger;
+  }
+
+/* ----- CAMBIO: AskpriceII ----- */
+  /* Pendiente: Padding del popup en vista movil*/
+  
+  /* Formato de descuentos */
+  .discount_container {
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .discount_text {
+    font-family: Oswald;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .sd-button {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background: none !important;
+    color: #9b8442 !important;
+    border-radius: 1px !important;
+    letter-spacing: 1px!important;
+    margin-right: 10px!important;
+    margin-top: 15px!important;
+    font-weight: bold!important;
+    font-size: 15px!important;
+    text-decoration:underline!important;
+  }
+  
+  img.sd-button {
+    margin: 0px!important;
+    padding: 0px!important;
+    height: 42px!important;
+    width: 42px!important;
+  }
+  
+  span.sd-button {
+    margin: 0px!important;
+    padding: 0px!important;
+  }
+
+/* Delivery TIME */
+  .deliver {
+    cursor:pointer;
+    color:{{ settings.link_color }};    
+  }
+
+  /* Pop up centrado */ 
+  div.mycform{
+    position: fixed!important;
+    display: none;
+    width:480px;
+    text-align: center;
+    height:490px;
+    padding:5px;
+    background: white;
+    border-radius: 10px;
+    z-index: 1000000!important;
+    top: 0;
+    left: 0; 
+  }
+  
+  div.shipping_time {
+	margin-bottom: 10px;
+  }
+  
+  /* Pop up adapatado a vista movil */ 
+  @media only screen and (max-width: 480px){
+    div.mycform{
+      width: 250px; 
+      height: 390px;
+    }    
+    div.three.columns.omega {
+      margin-left: 0px;
+    }
+    div.three.columns.omega input, div.three.columns.alpha input {
+        height: 32px;
+        min-height: 32px;
+        width: 100px;
+        margin-top: 7px;
+        margin-bottom: 0px;
+    }
+    div.sec_main_div input {
+        height: 32px;
+        min-height: 32px;
+      	margin-top: 7px;
+        margin-bottom: 0px;
+    }
+  }
+  
+  div.six.columns.main_pop.offset-by-five {
+      padding-left: 0px!important;
+  }
+
+  /* Send info pop up style */
+  div.sendInfo_popup{
+    width: 900px;
+    height: 420px;
+    position: fixed!important;
+    display: none;
+    text-align: center;
+    padding:5px;
+    background: white;
+    border-radius: 10px;
+    z-index: 1000000!important;
+    top: 0;
+    left: 0; 
+  }
+
+/* ------- CAMBIO: HEADER -------- */
+  
+
+/*Para que en la vista "Ipad" las categorias no se monten*/
+  @media only screen and (min-width: 768px) and (max-width: 1215px){
+    ul.menu.center {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+    a.dropdown_link {
+      font-size: 10px;
+    }
+    span.icon-down-arrow {
+      font-size: 10px!important;    
+    }
+    .menu li a:focus{
+      font-size: 10px!important;
+    }
+  }
+
+  /* NAV en el pie del header */
+  .main_nav.clearfix.menu-position--inline.logo-align--left{
+    position: relative;
+  }
+  
+  .menu.align_left.clearfix {      
+    bottom: 0;
+    position: absolute;
+    padding-top: 60px;
+  }
+
+ /*Mas espacio entre header y resto*/
+  div.container{
+    padding-top:70px;
+  }
+  
+  /*TOP HEADER en minuscula*/
+  ul.menu.right li a{
+    text-transform: none!important;
+  }
+  
+  /* DROPDOWN en dos columnas */
+  .two-columns {
+    column-count: 2;
+  }
+  /* DROPDOWN con las dos categorias mas separadas */
+  .dropdown_column {
+    padding-right: 10%;
+  }
+  
+  /* Evitamos que salga el BUSCADOR de escritorio y forzamos a que salga siempre el de la vista movil */
+  .search_container {
+    display: none!important;
+  }
+  .search_link {
+    display: inline-block!important;
+    margin-left: 65px!important; //Lo alejamos un poco de nav
+  }
+  
+  /* Damos al icono de busqueda un estilo de boton */
+  .icon-search.dropdown_link {
+	background-color: {{ settings.btn_color }};
+    padding: 0px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 15px;
+  }
+  
+ 
+/* ------- CAMBIO: FOOTER -------- */
+  .footer_menu h6{
+    pointer-events: all!important;
+  }
+  .footer_menu h6 a{
+    color: #ffffff!important;
+    font-size: 16px!important;
+  }
+  
+
+  
+/* ------ CAMBIO: TOP-FOOTER ------- */
+  ul.social_icons{
+    margin-top: 10px;
+  }
+  /* Formato de paises en top footer */
+  p.iguanaCountries{
+    text-align: center;
+    padding-top: 20px;
+  }
+  
+  p.iguanaCountries a{
+    margin-left: 20px;
+  }
+  
+  div.sixteen.columns.row.footer_credits{  
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;  
+
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+  }
+  .iguanaCountries { flex: 3 0px; }
+  .credits { order: 1; } 
+  .iguanaCountries    { order: 2; }
+  .social_icons { order: 3; }
+  
+  /* En la vista movil no queremos que aparezcan links a otras plataformas*/
+  @media only screen and (max-width: 768px){
+    p.iguanaCountries{
+      display: none;
+    }    
+  }
+  
+/* No queremos que aparezca el BANNER SALE*/
+/* No queremos que aparezca el precio tachado*/
+/* No queremos que aparezca previous-next*/
+/* No queremos que aparezcan las migas de pan*/
+.banner_holder, .sale_banner_product, .was_price, .nav_arrows.breadcrumb_text, .clearfix.breadcrumb-collection {
+  display: none!important;
+}
+/*Queremos que tanto el precio dentro de product como collection quickview salga en rojo*/
+.current_price, .money {
+  color: #d54d4d!important;
+}
+ 
+  
+/* DESCRIPCION del producto en dos columnas */
+  /* Desktop */
+  dl.caracteristicas{
+    float: left;
+    width: 50%;
+  }
+  dl.caracteristicas dt{  
+      border-bottom: 1px dashed #333333;
+      color: #333333;
+      width: 90%;
+      font-weight: bold;
+  }  
+  /* Movil */  
+  @media only screen and (max-width: 768px){
+    dl.caracteristicas{
+      float: none;
+      width: 100%;
+    }    
+  }  
+  
+/*WHY-IGUANA: Responsive*/
+  @media only screen and (max-width: 768px){
+    div.contenedor-why-iguana {
+      height: 550px!important;
+    }
+  }
+  
+  .why-iguana-text {
+	margin-top:5px;
+    padding-top:10px;
+    padding-left:20px;
+    padding-bottom:10px;
+    padding-right:20px;
+    border-radius:4px;
+    height:55px;
+    text-align:center;
+    text-decoration:none;
+    display:block;
+  }
+  
+
+  
+/*LIMESPOT*/
+  h4.center.title.ls-box-title {
+    width:75%; border-bottom:1px solid; border-color:#aaaaaa; text-align:center!important; padding-bottom:16px!important;
+  }
+  
+  h3.ls-box-title {
+    font-size:18px!important; line-height:32px!important; width:75%; border-bottom:1px solid; border-color:#aaaaaa; text-align:center!important; padding-bottom:16px!important;
+  }
+
+	.ls-original-price.money{
+		display:none;
+	}
+
+	.ls-price {
+		//display:none; por si queremos quitar el precio
+	}
+
+	.ls-sale-sign {
+		display:none !important;
+	}
+    .ls-add-to-cart-button {
+     display:none !important;<!--Por Montblanc!! -->
+	}
+   .ls-add-to-cart-dropdown {
+     display:none !important;
+	}
+  
+/*TÍTULOS EN COLLECTION */
+  .thumbnail .price, .thumbnail .title {
+    font-size:medium!important;
+  }
+  
+/*BORDE IZQUIERDO GRIS EN SIDEBAR */
+ .toggle_list li.active a {
+  border-left: none;
+ }
+
+@media only screen and (max-width: 768px){
+  /* PARA QUE EN VISTA MOVIL TE PERMITA HACER SCROLL AL ABRIR EL MENU */
+    body.is-active {
+      overflow-y: visible; 
+    }
+  /* Para que el boton de busqueda no se descoloque mucho en vista movil */
+    .icon-search.dropdown_link {
+      margin-bottom: 2px;
+      margin-top: 2px;
+    }
+    /* En el menu de vista movil pondremos una linea encima de About us y Login*/
+    li a[href="/pages/about-us"], li a[href="/account/login"] {
+      border-top: solid 2px #9b8442;
+    }
+}
+  /*Linea superior blanca encima de los creditos del footer*/
+  .footer_credits {
+      border-top: 2px solid;
+  }
+
+  /* Degradado del logo (mouseon) */
+  img.primary_logo:hover  {
+    transition: all 0.5s ease;
+  }  
+  img.primary_logo:hover  {
+    opacity: 0.5;
+  }
+  
+  /*CART Y JS CART */
+  .freeShipping
+  {
+    color:#869b42;
+    font-size:130%;
+    font-weight:bold;
+  }
+
+  /* Hover del login en blanco */
+  a.icon-user:hover, a.icon-user:hover span {
+    color: white!important;
+  }   
+
+  /* Quitar descripcion de sugerencias en vista movil */
+  @media only screen and (max-width: 768px){
+    div.as_magento_product_desc{
+      display: none;
+    }  
+    div.as_magento_price{
+      font-weight: normal;
+      font-size: 15px;
+    } 
+  }
+
+  /* Precio en negrita */
+  .money {
+    font-weight: bold;
+  }
+
+  /* Para que se vea mejor en MAC */
+  html * {
+    -webkit-font-smoothing:initial!important
+  }
+
+  p.modal_price {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+  }
+
+  /* Para que no salga Ecommerce Software by Shopify */
+  .credits a[href*="https"] {
+    display: none;
+  }

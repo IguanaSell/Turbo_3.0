@@ -1,0 +1,31 @@
+{% if Loyalty == "True" %}
+
+  {% case shop.domain %} 
+
+  {% when 'www.iguanasell.com.au' %}
+
+  {% include 'sloyalty-statusbar.com.au' %}
+
+  {% when 'www.iguanasell.es' %}
+
+  {% include 'sloyalty-statusbar.es' %}
+
+  {% when 'www.iguanasell.com' %}
+
+  {% include 'sloyalty-statusbar.com' %}
+
+  {% when 'www.iguanasell.fr' %}
+
+  {% include 'sloyalty-statusbar.fr' %}
+
+  {% when 'www.iguanasell.de' %}
+
+  {% include 'sloyalty-statusbar.de' %}
+
+  {% when 'www.iguanasell.co.uk' %}
+
+  {% include 'sloyalty-statusbar.co.uk' %}
+
+  {% endcase %}
+
+{% endif %}

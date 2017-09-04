@@ -1,0 +1,15 @@
+{% assign linksd = "" %}
+
+
+{% include 'AP3-BrandCodes' %}
+
+
+{% if template == 'product' %}<!-- PARA QUE NO SE CARGUE EN QUICK VIEW -- PERO SÍ QUE SE ASIGNE SHAREXGIFT == TRUE -->
+
+  {% if shareXgift == true %}
+    <!-- Share for Discount Plugin - IMPRESCINDIBLE PARA QUE FUNCIONE -->
+     <script>window.jQuery || document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></'+'script>')</script>
+     <script type="text/javascript" src="//iguana-us.myshopify.com/apps/ShareDiscount/shareButtons-{{linksd}}.js"></script>
+  {% endif %}
+
+{% endif %}

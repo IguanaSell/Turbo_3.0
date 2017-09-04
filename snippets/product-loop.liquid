@@ -8,6 +8,17 @@
     <br class="clear product_clear" />
 {% endcapture %}
 
+<!--CAMBIO AP3 QUICK VIEW -->
+
+{% for product in products limit: 1 %}
+{% assign downtitle = product.title | downcase %}
+{% endfor %}
+
+{% assign shareXgift = false %}
+{% include 'AP3-collection' %}
+
+<!-- FIN CAMBIO -->
+
 <div itemtype="http://schema.org/ItemList" class="product-list collection-matrix clearfix">
   {% for product in products limit: limit %}
     {% if product.id == skip_product.id or skip == true %}
@@ -17,6 +28,9 @@
         {% assign skip = true %}
       {% else %}
 
+  
+    <!-- downtitle es... {{product.title | downcase}} -->
+  
         {% include 'product-thumbnail', sidebar: sidebar %}
 
         {% if products_per_row == "2" %}

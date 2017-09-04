@@ -1,12 +1,11 @@
 {% assign collection_handles = product.collections | map: 'handle' %}
-{% assign variant = product.selected_or_first_available_variant %}
 <span class="quick_shop ss-icon js-quick-shop-link"
       data-no-instant
       data-remodal-target="quick-shop"
       data-id="{{ product.id }}"
       data-handle="{{ product.handle }}"
       data-money-format="{{ shop.money_format }}"
-      data-formatted-price="{% if collection_handles contains 'coming-soon' %}{{ 'collections.general.coming_soon' | t }}{% else %}{{ variant.price | money }}{% endif %}"
+      data-formatted-price="{% if collection_handles contains 'coming-soon' %}{{ 'collections.general.coming_soon' | t }}{% else %}{{ product.price | money }}{% endif %}"
       data-url="{{ product.url | within: collection }}"
       data-title="{{ product.title | escape }}"
       data-details-text="{{ 'collections.general.view_product_details_html' | t | escape}}"

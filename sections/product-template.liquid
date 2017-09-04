@@ -1,3 +1,34 @@
+     <!-- CAMBIO: SHARE FOR DISCOUNT --> 
+       
+      {% comment %}
+      {% capture ifollowiguana %}{{ 'general.extra.ifollowiguana' | t }}{% endcapture %}
+      {% capture ifollowiguanaII %}{{ 'general.extra.ifollowiguanaII' | t }}{% endcapture %}
+
+      {% assign shareXgift = false %}
+      {% for collection in product.collections %}
+        {% if collection.handle == ifollowiguana or collection.handle == ifollowiguanaII %}
+  			{% assign shareXgift = true %}
+             <script>window.jQuery || document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></'+'script>')</script>
+                    <!-- Este condicional permite que cuando estemos en la vista de producto se cargue el descuento -->
+                        {% if collection.handle == ifollowiguana %}
+                        	{% capture discountURL %}{{'general.extra.apIIIpopuplink' | t }}{% endcapture %}
+                        {% elsif collection.handle == ifollowiguanaII %}
+							{% capture discountURL %}{{'general.extra.apIIIpopuplink2' | t }}{% endcapture %}
+						{% endif %}
+
+             <!--<script type="text/javascript" src="{{discountURL}}"></script>-->
+        {% endif %}
+         
+
+      {% endfor %}
+      {% endcomment %}
+
+      {% assign shareXgift = false %} 
+      {% assign downtitle = product.title | downcase %}
+      
+      {% include 'AP3-product' %}
+
+
 <a name="pagecontent" id="pagecontent"></a>
 
 <div class="container main content">
@@ -114,7 +145,9 @@
               <meta itemprop="itemCondition" content="New" />
 
               <span class="sold_out">{% if variant.available == false %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
-              <span itemprop="price" content="{{ variant.price | money_without_currency }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+              <!-- CAMBIO: Precio en rojo -->
+              <span itemprop="price" content="{{ variant.price | money_without_currency }}" class="sale">
+                
                 <span class="current_price {% if product.available == false %}hidden{% endif %}">
                   {% if variant.price > 0 %}
                     <span class="money">{{ variant.price | money }}</span>
@@ -122,7 +155,33 @@
                     {{ settings.free_price_text }}
                   {% endif %}
                 </span>
+                
+             <!-- CAMBIO: APIII BUTTON -->
+            {% if shareXgift == true %}
+      				<!-- Share for Discount Plugin -->
+                    
+                    <!-- CAMBIO: Cargar descuento al hacer click -->
+                    <span class="sd-button" onclick="
+                                                      ga('send', 'event', '15button', 'click', 'GetYour15');
+                                                      if(descuento_cargado == false){
+                                                      $.getScript('{{discountURL}}').done(function(script, textStatus) {
+                                                          descuento_cargado = true;
+                                                          $( '.sd-button' ).click();
+                                                      	});
+                                                      }
+                                                      "
+                          
+                          
+                          
+                          style="cursor:pointer"> (Want to pay less? Click here.) </span> 
+                  
+      
+      	    {% endif %}
+             <!-- FIN CAMBIO APIII -->
+                
               </span>
+              
+              
               <span class="was_price">
               {% if variant.price < variant.compare_at_price and variant.available %}
                 <span class="money">{{ variant.compare_at_price | money }}</span>
@@ -145,13 +204,14 @@
             {% include 'product-form' with 'product' %}
           {% endunless %}
 
+          <!-- CAMBIO: Comentamos el codigo de la descripcion
           {% if section.settings.product_description_position == "bottom" %}
             {% if product.description != blank %}
              <div class="description bottom" itemprop="description">
               {{ product.description | split: '<!-- split -->' | first }}
              </div>
             {% endif %}
-          {% endif %}
+          {% endif %}-->
 
           {% if settings.enable_shopify_review_comments and settings.review_position == "next_to_gallery" %}
             <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
@@ -203,6 +263,16 @@
         </div>
       </div>
 
+	  <!-- CAMBIO: Ponemos aqui el codigo de la descripcion -->
+      {% if section.settings.product_description_position == "bottom" %}
+        {% if product.description != blank %}
+         <div class="description bottom" itemprop="description">
+          {{ product.description | split: '<!-- split -->' | first }}
+         </div>
+        {% endif %}
+      {% endif %}      
+	  <!--  -->
+      
       {% if product.description contains "<!-- split -->"  %}
         <br class="clear" />
         <div class="section clearfix">
@@ -218,7 +288,12 @@
         </div>
       {% endif %}
     </div>
-
+        
+    <!-- CAMBIO: why iguana -->
+    {% include 'why-iguana' %} 
+    {% include 'limespot-related-product' %}
+    {% include 'limespot-recently-viewed' %}
+        
   {% if section.settings.display_related_products and sidebar == false %}
         </div>
       </div>
@@ -227,6 +302,9 @@
   {% elsif section.settings.display_related_products and sidebar == true %}
         {% include 'related-products' %}
         </div>
+
+
+
       </div>
     </div>
   {% else %}

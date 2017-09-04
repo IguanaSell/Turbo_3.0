@@ -1,3 +1,6 @@
+<!-- CAMBIO: Guardamos en una variable los dropdown_title que vamos a poner en dos columnas -->
+{% capture class_two_columns %}{{'general.extra.en_dos_columnas' | t}}{% endcapture %}
+
 {% for link in linklists[sub-menu].links %}
   {% if linklists[link.handle] != empty %}
     {% assign link_count = linklists[link.handle].links | size %}
@@ -13,7 +16,8 @@
               </ul>
 
               {% if linklists[sublink.handle] != empty %}
-                <ul>
+                <!-- CAMBIO: Damos valor a la class -->
+                <ul {% if class_two_columns contains sublink.title %}class="two-columns"{% endif %}>
                   {% for subsublink in linklists[sublink.handle].links %}
                     <li>
                       <a href="{{ subsublink.url }}">{{ subsublink.title }}</a>

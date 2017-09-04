@@ -8,6 +8,8 @@
 </div>
 
 {% if cart.item_count == 0 %}
+<!--  CAMBIO: Al estar el carrito vacio nos lleva a pagina principal -->
+<script>window.location.href = "{{'general.extra.page_url' | t}}";</script>
   <div class="sixteen columns">
     <div class="section clearfix">
       <div class="six columns offset-by-five">
@@ -43,14 +45,18 @@
               <h3>
                 <a href="{{ item.url }}">{{ item.product.title }}</a>
               </h3>
-
+ <!--CAMBIO-->{%if item.product.variants.size >1 %}<!-- FIN CAMBIO - Para que aparezca las variantes sólo cuando hay más de una-->
               {% unless item.variant.title contains "Title" %}
+              
+              
                 <p class="meta">
                   {% for option in item.product.options %}
-                    <span class="label">{{ option }}:</span> <span>{{ item.variant.options[forloop.index0] }}</span><br />
+                    <span class="label">{{ 'general.extra.nib' | t }}:</span> <span>{{ item.variant.options[forloop.index0] }}</span><br />
                   {% endfor %}
                 </p>
               {% endunless %}
+              
+<!--CAMBIO--> {% endif %} <!-- FIN CAMBIO-->
 
               {% if item.properties %}
                 <p>
@@ -77,11 +83,27 @@
                   {{ settings.free_price_text }}
                 {% endif %}
               </p>
+            
+              <!--CAMBIO - REMOVE-->
+              <p style="margin-bottom:0px">
+                <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" title="Remove Item" >{{ 'cart.general.remove' | t}}</a>
+              </p>
+              <!--FIN CAMBIO -->
 
               <div class="product-quantity-box left">
                 <span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>
                 <input type="number" min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" />
-                <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
+                <span class="ss-icon product-plus js-change-quantity" data-func="plus">
+                  <span class="icon-plus"></span></span>
+                
+                  <!-- CAMBIO - stock tip -->
+                   {% assign Only = 'general.extra.Only' | t %}
+                   {% assign left = 'general.extra.left' | t %}
+                   {% if   item.variant.weight   <= 2 and item.variant.inventory_quantity < 4 %}
+                     <span id="onlyLeft" style="font-weight:bold; position:absolute; width:100px; margin-left:15px;">  {{Only}} {{item.variant.inventory_quantity}} {{left}}</span>
+                   {%endif %}
+                  <!-- FIN CAMBIO -->
+                
               </div>
             </div>
           </div>
@@ -99,6 +121,25 @@
               <span class="subtotal_amount">
                 <span class="money">{{ cart.total_price | money_with_currency }}</span>
               </span>
+              
+              <!-- CAMBIO -- SHIPPING INFORMATION -->
+              {% assign FreeShippinglimit = 'general.extra.freeShippingLimit' | t %}
+              {% assign FreeShippinglimit = FreeShippinglimit | plus:0 %} <!-- Convertimos el string en un int sumandole 0 -->
+              {% capture beforeAmountFreeShipping %}{{ 'general.extra.beforeAmountFreeShipping' | t }}{% endcapture %}
+              {% capture leftForFreeShipping %}{{ 'general.extra.leftForFreeShipping' | t }}{% endcapture %}
+              {% capture cartFreeShipping %}{{ 'general.extra.cartFreeShipping' | t }}{% endcapture %}
+              
+              {% assign differenceToFreeShipping = cart.total_price | minus: FreeShippinglimit   %}
+              
+              <br/>
+              {% if differenceToFreeShipping >= 0 %}
+             	 <small id="testFreeShipping"class="freeShipping" style="font-size:90% !important">{{cartFreeShipping}}</small>
+              {% else %}
+              {% assign differenceToFreeShipping = differenceToFreeShipping | times: -1  %}
+              <small id="leftForFreeShipping">({{beforeAmountFreeShipping}} {{ differenceToFreeShipping  | money }} {{leftForFreeShipping}})</small>
+              {% endif %}
+              <!-- FIN CAMBIO -->
+              
               {% comment %}
               <small id="estimated-shipping" style="display:none">
                 + <em>
@@ -147,7 +188,11 @@
                 {{ content_for_additional_checkout_buttons }}
               </div>
             {% endif %}
-
+            
+            <!-- CAMBIO: Informacion de cambio -->
+            <div id="returnsInformation">
+          		<strong>{{ 'general.extra.returnTitle' | t}}</strong>{{ 'general.extra.returnText' | t}} <a href="{{ "general.extra.linkReturnsInfo" | t}}" target="_blank">{{ 'general.extra.clickToKnowMore' | t}}</a>
+            </div>
             {% if cart.item_count > 0 %}
               <div class="featured-links">
                 <a href="{% if cart.items.first.product.collections != blank %}{{ cart.items.first.product.collections.last.url }}{% else %}/collections/all{% endif %}" class="secondary_button">{{ 'cart.general.continue_shopping_link_html' | t }}</a>
@@ -160,6 +205,11 @@
   </form>
 
   {% include 'cart-shipping-calculator' %}
+  <!-- Bold: Loyalty Points - Step 5.2 -->
+  {% if shop.metafields.bold_loyalties.active == 1 %}
+  <script src="//loy.boldapps.net/front_end/cart_js?shop={{shop.domain}}"></script>
+  {% endif %}
+  <!-- // end bold code -->
 {% endif %}
 
 {% schema %}

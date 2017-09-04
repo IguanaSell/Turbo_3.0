@@ -1,3 +1,8 @@
+<!-- CAMBIO: Declaramos las variables necesarias y les damos valor -->
+{% capture footer_links %}{{ 'general.extra.footer_links' | t }}{% endcapture %}
+{% assign link_list = footer_links | split: ',' %}
+{% assign counter = 0 %}
+
 <footer class="footer">
   <div class="container footer-menu-wrap">
       {% for block in section.blocks %}
@@ -25,7 +30,9 @@
           {% elsif block.type == 'link_list' %}
             <div class="footer_menu">
               {% if block.settings.menu != blank %}
-                <h6>{{ linklists[block.settings.menu].title }}<span class="right icon-down-arrow"></span></h6>
+              <!-- CAMBIO: Enlace en title -->
+              <h6><a href="{{link_list[counter]}}">{{ linklists[block.settings.menu].title }}</a><span class="right icon-down-arrow"></span></h6>
+                {% assign counter = counter | plus: 1 %}
                 <div class="toggle_content">
                   <ul>
                     {% for link in linklists[block.settings.menu].links %}
@@ -101,6 +108,14 @@
           {% endif %}
           {{ powered_by_link | split: '" ' | join: '?ref=out-of-the-sandbox" ' | split: '">' | join: '?ref=out-of-the-sandbox">' }}
         </p>
+        <!-- CAMBIO: Añadimos los paises de las otras plataformas -->
+        {% assign iguanaCountriesURL = 'general.extra.iguanaCountriesURL' | t | split: ", " %}
+        {% assign iguanaCountries = 'general.extra.iguanaCountries' | t | split: ", " %}
+        <p class="iguanaCountries">
+        {% for counter in (0..6) %}
+            <a href="{{ iguanaCountriesURL[counter] }}">{{ iguanaCountries[counter] }}</a>
+        {% endfor %}
+        </p>
 
         {% if section.settings.display_payment_methods %}
           <div class="payment_methods">
@@ -109,6 +124,10 @@
             {% endfor %}
           </div>
         {% endif %}
+        
+        <!-- CAMBIO: Anadimos los iconos de redes sociales -->
+        {% include 'social-icons' %}
+        
       </div><!--end footer_credits-->
     </div>
   </div>

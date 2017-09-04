@@ -1,0 +1,40 @@
+  {% case shop.domain %} 
+
+  {% when 'www.iguanasell.com.au' %}
+    {% include 'sloyalty-statusbar' %} 
+    {% if template == 'product' or template == 'collection' %}
+        <p style="margin:0 0 15px !important;" class="earnmy"> {{'general.extra.Earn' | t}} {{ product.price | times:0.1 }}0 {{'general.extra.LoyaltyPoints' | t}}. <a href="{{'general.extra.LinkLoyalty' | t}}" target="_blank">{{'general.extra.LearnMore' | t}}</a> </p> <!-- Loyalty points -->
+    {% elsif template == 'customers/account' %}
+        <p><h4>{{ 'general.extra.loyaltyPoints' | t }}</h4></p>
+        <p> {{ 'general.extra.clickToKnowMore' | t }}: </p>
+        <div class="sloyalty-loyaltyprogram-points" data-font-family="Arial" data-font-size="14px" data-color="#000000" data-font-style="normal" data-font-weight="normal" data-text-decoration="none" data-text-align="center" style="height: 20px;"></div>
+    {% endif %}
+  
+  {% when 'www.iguanasell.es' %}
+    {% include 'sloyalty-statusbar' %} 
+    {% if template == 'product' or template == 'collection' %}
+        <p style="margin:0 0 15px !important;" class="earnmy"> {{'general.extra.Earn' | t}} {{ product.price | times:0.1 }}0 {{'general.extra.LoyaltyPoints' | t}}. <a href="{{'general.extra.LinkLoyalty' | t}}" target="_blank">{{'general.extra.LearnMore' | t}}</a> </p> <!-- Loyalty points -->
+    {% elsif template == 'customers/account' %}
+        <p><h4>{{ 'general.extra.loyaltyPoints' | t }}</h4></p>
+        <p> {{ 'general.extra.clickToKnowMore' | t }}: </p>
+        <div class="sloyalty-loyaltyprogram-points" data-font-family="Arial" data-font-size="14px" data-color="#000000" data-font-style="normal" data-font-weight="normal" data-text-decoration="none" data-text-align="center" style="height: 20px;"></div>
+    {% endif %}
+
+  {% when 'www.iguanasell.com' %}
+
+  {% include 'sloyalty-statusbar.com' %}
+
+  {% when 'www.iguanasell.fr' %}
+
+  {% include 'sloyalty-statusbar.fr' %}
+
+  {% when 'www.iguanasell.de' %}
+
+  {% include 'sloyalty-statusbar.de' %}
+
+  {% when 'www.iguanasell.co.uk' %}
+
+  {% include 'sloyalty-statusbar.co.uk' %}
+
+  {% endcase %}
+

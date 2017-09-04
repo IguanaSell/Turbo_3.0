@@ -15,7 +15,7 @@
     <aside class="five columns account-sidebar">
       <h4 class="name"><a href="/account" title="{{ 'layout.customer.my_account' | t }}">{{ customer.name }}</a></h4>
       <p class="email note">{{ customer.email }}</p>
-      <h4>Primary Address</h4>
+      <h4>{{ 'general.extra.primaryAddress' | t }}</h4>
       <div class="address note">
         {% if customer.default_address != nil %}
           <p>{{ customer.default_address.address1 }}</p>
@@ -30,6 +30,9 @@
         {% endif %}
           <p><a href="/account/addresses">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
       </div>
+      <!-- CAMBIO: LOYALTY POINTS -->
+      {% include 'sloyalty-general' %}
+    
     </aside>
     <main class="eleven columns account-main">
       <div id="customer_orders">

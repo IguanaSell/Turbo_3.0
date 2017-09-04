@@ -8,6 +8,14 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
   Image functions
 ==============================================================================*/
 
+//CAMBIO: Variable global para asignar delay adecuado al desplegable
+var contenedorDesplegado = 0; // 0 no visible ---- 1 visible
+var flag = 0; //0 si no ha transcurrido el tiempo necesario para que se abra el desplegable
+var timer;
+var element123;
+var allInYourCart = 0; //0 si no esta todo el stock en la carta y 1 si ya no se pueden añadir mas productos a la carta
+
+
 var imageFunctions = {
   zoom: function(zoomParent, enableTouch, magnify){
     var activateZoom = $(zoomParent).data('zoom');
@@ -535,6 +543,48 @@ selectCallback = function(variant, selector) {
   var $product = $('.product-' + selector.product.id);
   var $notify_form = $('.notify-form-' + selector.product.id);
   var $productForm = $('form.product_form', $product);
+  
+// CAMBIO:--------------------- MYCFORM ---------------------
+    $( ".deliver" ).click(function() {
+      $('.mycform input[id=contact_form_phone]').val('{{ 'general.extra.delivery_time_popup' | t}} '+selector.product.title);
+    });
+// ---------------------------------------------------  
+    
+    /* CAMBIO: ------ Giving value to CURRENT_WEIGHT (BEGINNING) ------ */
+      $('.current_weight', $product).html(variant.weight, $('form.product_form', $product));
+	  myweight = $('.current_weight',$product).html();
+	  
+	 
+	   if(myweight == 0)
+	   { 
+		  $('.fircon').hide(); 
+		   $('.seccon').hide(); 
+		    $('.thicon').hide(); 
+	   }	
+	   else if(myweight <= 2)
+	   { 
+		  $('.fircon').show(); 
+		   $('.seccon').hide(); 
+		    $('.thicon').hide(); 
+	   }
+	   else if(myweight <= 30)
+	   {
+		   
+		    $('.fircon').hide(); 
+		   $('.seccon').show(); 
+		    $('.thicon').hide(); 
+		   
+		}
+		
+		else
+		{
+		
+		 $('.fircon').hide(); 
+		   $('.seccon').hide(); 
+		    $('.thicon').show(); 
+		
+			}
+    /* ------ Giving value to CURRENT_WEIGHT (END) ------ */ 
 
   //Image Variant feature
    if (variant && variant.featured_image && $product.is(":visible")) {
@@ -981,24 +1031,118 @@ var header = {
         }
       });
 
+      /* CAMBIO: Comentamos el codigo antiguo
       $(".main_nav, .top_bar, .cart_container").on("mouseleave", function() {
         $('.dropdown_container').hide();
         $(".active_link").removeClass("active_link");
         $('.is-absolute').parent().addClass('feature_image');
-      });
+      });*/    
+      
+      /* CAMBIO: SUGERENCIAS INSTANT SEARCH (BEGIN)*/
+      $(".main_nav, .top_bar, .cart_container").on("mouseleave", function() {
+        var myElem = document.getElementById("ui-id-3");
+        //EVITAR ERROR CONSOLE: Cuando no existe el elemento (sugerencias de busqueda) actua como el codigo original
+        if(typeof myElem === null){
+          $('.dropdown_container').hide();
+          $(".active_link").removeClass("active_link");
+          $('.is-absolute').parent().addClass('feature_image');          
+      	}
+        //EVITAR ERROR CONSOLE: Cuando exista el elemento (sugerencias de busqueda) tiene en cuenta a este 
+        else{
+          if(document.getElementById("ui-id-3").style.display == "none"){
+            $('.dropdown_container').hide();
+            $(".active_link").removeClass("active_link");
+            $('.is-absolute').parent().addClass('feature_image');
+          }
+          else{
+            document.getElementById("ui-id-3").onmouseout = function() {
+                document.getElementById("ui-id-3").style.display = "none";
 
+            };
+            document.getElementById("ui-id-3").onmouseover = function() {
+                document.getElementById("ui-id-3").style.display = "block";
+            };
+          }
+        }
+      });
+      /* CAMBIO: SUGERENCIAS INSTANT SEARCH (END)*/
+
+      /* CAMBIO: Retrasamos la aparicion del desplegable al poner el puntero sobre el navegador*/
       $(".dropdown_link").on("mouseenter", function() {
         if(!$(this).hasClass("active_link")) {
           $('.dropdown_container').hide();
-          $(this).parents(".main_nav").find('[data-dropdown="' + $(this).data("dropdown-rel") + '"]').show();
+          flag = 1;
+          /* Hemos introducido un delay en caso de que sea la primera vez que abrimos el desplegable */
+          if(contenedorDesplegado == 1){
+          	$(this).parents(".main_nav").find('[data-dropdown="' + $(this).data("dropdown-rel") + '"]').show();
+            contenedorDesplegado = 1;
+            $(".fondo").css('display','block');
+          }
+          else {
+            element123 = $(this);
+            timer = setTimeout(function(){ 
+              if(flag==1){
+                $(".fondo").css('display','block'); 
+                contenedorDesplegado = 1; flag = 2; element123.parents(".main_nav").find('[data-dropdown="' + element123.data("dropdown-rel") + '"]').show();
+              } 
+            }, 500);
+          }
           if($(this).hasClass('mini_cart')) {
             $(this).parent('.cart_container').addClass("active_link");
+            $('.fondoCart').css('display', 'block');
+            flag=0;
           } else {
             $(this).addClass("active_link");
             $('.is-absolute').parent().removeClass('feature_image');
           }
         }
       });
+       
+      
+      $(".dropdown_link").on("mouseleave", function() {
+        if($(this).hasClass("active_link")) {
+			flag = 0;
+            clearTimeout(timer);
+        }
+      });
+      
+      /* CAMBIO: Este conjunto de funciones se encarga de que el fondo oscuro de nav y de mini-cart aparezca y desaparezca cuando sea neceario */
+      
+		$(".dropdown_container").on("mouseenter", function() {
+          $(".fondo").css('display','block');
+        });
+		$(".fondo").on("mouseenter", function() {
+          $(".fondo").css('display','none');
+          contenedorDesplegado = 0;
+        });
+		$(".menu.align_left.clearfix").on("mouseleave", function() {
+          $(".fondo").css('display','none');
+        });
+      
+		$(".fondoCart").on("mouseenter", function() {
+          $(".fondoCart").css('display','none');
+        });
+      
+		$(".icon-cart.mini_cart.dropdown_link").on("mouseleave", function() {
+          $(".fondoCart").css('display','none');
+        });
+      
+		$(".cart_content.animated.fadeIn").on("mouseenter", function() {
+          if( $(".fondoCartButton").css('display')=='none'){
+            $(".fondoCart").css('display','block');
+          }
+        });    
+      
+        // CAMBIO: Funcionalidad extra para ocultar el desplegable de nav
+		$(".top_bar.clearfix").on("mouseenter", function() {
+          contenedorDesplegado=0;
+        }); 
+      
+        /* CAMBIO: Para que el fondo oscuro aparezca al añadir producto a cart */
+		$(".cart_content.animated.fadeIn").on("mouseleave", function() {          
+            $(".fondoCartButton").css('display','none');
+        });
+      
     }
 
   }
@@ -1340,7 +1484,8 @@ $(function() {
 
   utils.createAccordion('.toggle-all--true', 'h4.toggle', 'ul.toggle_list');
   utils.createAccordion('#mobile_menu', 'li.sublink > a', 'li.sublink ul');
-  utils.createAccordion('.footer_menu', 'h6', 'ul');
+  /*CAMBIO: RESTRINGIR ACORDEON DE FOOTER EN VISTA DESKTOP*/
+  if(window.innerWidth<768){utils.createAccordion('.footer_menu', 'h6', 'ul');}
   utils.createAccordion('.product_section .accordion-tabs', '.tabs li > a', '.tabs-content li');
   utils.initializeTabs();
   utils.resizeActionButtons();
@@ -2047,6 +2192,37 @@ $(function() {
 
     $('.js-cart_items').html(cart_items_html);
     $('.js-cart_subtotal').html(cart_action_html);
+    
+    //CAMBIO: JS CART SHIPPING INFO UPDATE (begin)
+    $('.js-cart_preload').hide();//ocultamos lo que habíamos puesto en el html que se había precargada
+
+    {% comment %}
+    {% assign freeShippingLimit = 'general.extra.freeShippingLimit' | t %}
+    {% assign freeShippingLimit = freeShippingLimit | plus:0 %} // Convertimos el string en un int sumandole 0
+    {% endcomment %}
+    
+    var freeShippingLimit = {{'general.extra.freeShippingLimit' | t}};
+    
+    if (cart.total_price > freeShippingLimit)
+    {
+      $('.js-cart_freeShipping').show();
+      $('.js-cart_leftForFreeShippingText').hide();
+      $('.js-cart_leftForFreeShippingAmount').hide();
+    }
+    else
+    {
+      $('.js-cart_freeShipping').hide();
+      $('.js-cart_beforeAmountFreeShipping').show();
+      //var amountLeftForFreeShipping = Shopify.formatMoney(freeShippingLimit - cart.total_price,$cart.data('money-format'));
+      var amountLeftForFreeShipping = Shopify.formatMoney(freeShippingLimit - cart.total_price,$cart.data('money-format'));
+
+      $('.js-cart_leftForFreeShippingText').show();
+      
+      $('.js-cart_leftForFreeShippingAmount').html(amountLeftForFreeShipping);
+      $('.js-cart_leftForFreeShippingAmount').show();
+      
+    }
+    //CAMBIO: JS CART SHIPPING INFO UPDATE (end)
 
     {% if settings.show_multiple_currencies %}
       convertCurrencies();
@@ -2101,10 +2277,11 @@ $(function() {
           });
         },
         error: function(XMLHttpRequest) {
+          // CAMBIO: Cuando no podamos añadir mas productos al carrito allInYourCart = 1
+		  allInYourCart = 1;
           var response = eval('(' + XMLHttpRequest.responseText + ')');
           response = response.description;
           $('.warning').remove();
-
           var warning = '<p class="warning animated bounceIn">' + response.replace('All 1 ', 'All ') + '</p>';
           $addToCartForm.after(warning);
           $addToCartBtn.removeAttr('disabled').removeClass('disabled');
@@ -2614,3 +2791,101 @@ $(document)
     var $parentSection = $('#shopify-section-' + e.detail.sectionId);
 
 });
+
+/* ----------------------------------------------------- */
+
+/* CAMBIO: FONDO que oscurece el resto de la pagina al desplegar nav */
+  /* ------ Altura del fondo = documento ------ */
+if (window.innerWidth > 768) {
+    $( document ).ready(function() {
+      var body = document.body, html = document.documentElement;
+      var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+      $('.fondoPopUp').css('height', height);
+      $('.fondoCart').css('height', height);
+      $('.fondo').css('height', height);
+      $('.fondoCartButton').css('height', height); 
+    });
+}
+/* -------------------------------------- */
+
+  //CAMBIO: Descuentos en QV
+  	var descuento_cargado = false;		/* Para vista producto */
+	var descuento1_cargado = false;
+	var descuento2_cargado = false;
+ 
+ 
+/* --------------- DELIVERY POP UP --------------- */
+  $('.deliver').click(function() { 
+    $('.fondoPopUp').css('display', 'block');
+    $('.mycform').css('display', 'block');
+  });
+  $('.fondoPopUp').click(function() {
+    $('.fondoPopUp').css('display', 'none');
+    $('.mycform').css('display', 'none');
+  });
+/* --------------- SEND INFO POP UP --------------- */
+  $('.action_button.send_info').click(function() { 
+    $('.fondoPopUp').css('display', 'block');
+    $('.sendInfo_popup').css('display', 'block');
+  });
+  $('.fondoPopUp').click(function() {
+    $('.fondoPopUp').css('display', 'none');
+    $('.sendInfo_popup').css('display', 'none');
+    $('.sendInfo_popup').children('iframe').remove();
+  });
+/* ------------------------------------------------ */
+
+
+  $( document ).ready(function() {
+    /* --------------- POP UP DELIVERY CENTRADO --------------- */
+    var popUpHeight = $('.mycform').height();
+    var popUpWidth = $('.mycform').width();
+    var marginLeft = (window.innerWidth - popUpWidth)/2;
+    var marginTop = (window.innerHeight - popUpHeight)/2;
+
+    $('.mycform').css('margin-left', marginLeft);
+    $('.mycform').css('margin-top', marginTop);
+
+    /* ------- Atribuimos acciones al boton de cerrar popup ------- */
+    $('.remodal-close').click(function() {
+    $('.fondoPopUp').css('display', 'none');
+    $('.mycform').css('display', 'none');
+    });
+    /* -------------------------------------- */
+  });
+  
+  $( document ).ready(function() {
+    /* --------------- POP UP SEND INFO CENTRADO --------------- */
+    var popUpHeight = $('.sendInfo_popup').height();
+    var popUpWidth = $('.sendInfo_popup').width();
+    var marginLeft = (window.innerWidth - popUpWidth)/2;
+    var marginTop = (window.innerHeight - popUpHeight)/2;
+
+    $('.sendInfo_popup').css('margin-left', marginLeft);
+    $('.sendInfo_popup').css('margin-top', marginTop);
+
+    /* ------- Atribuimos acciones al boton de cerrar popup ------- */
+    $('.remodal-close').click(function() {
+    $('.fondoPopUp').css('display', 'none');
+    $('.sendInfo_popup').css('display', 'none');
+    });
+    /* -------------------------------------- */
+  });
+  
+ 
+ 	/* CAMBIO: Para que el fondo oscuro aparezca al añadir producto a cart */
+    $(".action_button.add_to_cart").click(function() {
+      setTimeout(function(){ 
+        if ( allInYourCart == 0) {
+          $('.fondoCartButton').fadeIn();
+          flag=0; 
+        }
+        else{
+          allInYourCart=0;
+        }
+      }, 200); 
+    }); 
+  
+
+  
+  

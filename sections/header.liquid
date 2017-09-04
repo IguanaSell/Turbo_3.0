@@ -76,6 +76,8 @@
             {% include 'currencies-switcher' %}
           </li>
         {% endif %}
+        <!-- CAMBIO: Añadir carta menu vista movil -->
+        <li data-no-instant=""> <a href="/cart" id="customer_cart_link">Cart</a></li>
       </ul>
     </div>
   </div>
@@ -111,14 +113,7 @@
         {% include 'social-icons' %}
       {% endif %}
       <ul class="menu left">
-        {% if section.settings.phone_number != blank %}
-          <li><a href="tel:+{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a></li>
-        {% endif %}
-        {% if section.settings.top_bar_menu != blank %}
-          {% for link in linklists[section.settings.top_bar_menu].links %}
-            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-          {% endfor %}
-        {% endif %}
+	  <!-- CAMBIO: Sacamos de aqui el menu_left -->
       </ul>
       {% if section.settings.show_cart %}
         <div class="cart_container">
@@ -166,11 +161,39 @@
               <hr />
               <ul>
                 <li class="cart_subtotal js-cart_subtotal">
-                  <span class="right">
-                    <span class="money">{{ cart.total_price | money }}</span>
-                  </span>
+                  <span class="right"><span class="money">{{ cart.total_price | money }}</span></span>
                   <span>{{ 'layout.general.subtotal' | t }}</span>
                 </li>
+				<!-- CAMBIO:  SHIPPING INFORMATION -->
+                  <li>
+                    {% capture beforeAmountFreeShipping %}{{ 'general.extra.beforeAmountFreeShipping' | t }}{% endcapture %}
+                    {% capture leftForFreeShipping %}{{ 'general.extra.leftForFreeShipping' | t }}{% endcapture %}
+                    {% capture cartFreeShipping %}{{ 'general.extra.cartFreeShipping' | t }}{% endcapture %}
+          		    {% assign FreeShippinglimit = 'general.extra.freeShippingLimit' | t %}
+          		    {% assign FreeShippinglimit = FreeShippinglimit | plus:0 %} <!-- Convertimos el string en un int sumandole 0 -->
+                    
+                    {% assign differenceToFreeShipping = cart.total_price | minus: FreeShippinglimit   %}
+
+                    <!-- DEJAMOS PREPARADOS LOS CONTENEDORES PARA CUANDO SE REFRESQUE LA INFORMACIÓN DEL CARRITO -->
+                    <span class="js-cart_freeShipping freeShipping" style="display:none">{{cartFreeShipping}}</span>
+                    <span class="js-cart_beforeAmountFreeShipping leftForFreeShipping" style="display:none"> {{beforeAmountFreeShipping}} </span>
+                    <span class="js-cart_leftForFreeShippingAmount leftForFreeShipping" style="display:none"></span>
+                    <span class="js-cart_leftForFreeShippingText leftForFreeShipping" style="display:none"> {{leftForFreeShipping}}</span>
+                    
+                    <!-- ESTO LO CARGAMOS CUANDO SE REFRESCA LA PÁGINA - SI HAY ALGÚN CAMBIO EN EL CARRITO SE OCULTA MEDIANTE JS -->
+                    {% if differenceToFreeShipping >= 0 %}<!-- esto aparece sólo cuando se refresca toda la página -->
+                       <!--<small id="testFreeShipping"class="colorinstock js-cart_freeShipping" style="font-size:110% !important;color:#869b42;font-weight:bold;">{{cartFreeShipping}}</small>
+                        -->
+                    <span class="js-cart_preload freeShipping">{{cartFreeShipping}}</span>
+                    {% else %}
+                    {% assign differenceToFreeShipping = differenceToFreeShipping | times: -1  %}
+                    <!--<small id="leftForFreeShipping" >({{ differenceToFreeShipping  | money }} {{leftForFreeShipping}})</small>
+                    -->
+                    
+                    <span class="js-cart_preload leftForFreeShipping">{{beforeAmountFreeShipping}} {{ differenceToFreeShipping  | money }} {{leftForFreeShipping}}</span>
+					{% endif %}
+                  </li>
+                <!-- FIN CAMBIO: SHIPPING INFORMATION -->
                 <li>
                   {% if settings.display_special_instructions and settings.go_to_checkout %}
                     <textarea id="note" name="note" rows="2" placeholder="{{ 'layout.general.cart_note' | t }}" class="clearfix">{{ cart.note }}</textarea>
@@ -196,6 +219,13 @@
 
                   <input type="submit" class="action_button" value="{% if settings.go_to_checkout %}{{ 'layout.general.checkout' | t }}{% else %}{{ 'layout.general.go_to_cart' | t }}{% endif %}" />
                 </li>
+                  <!-- CAMBIO: TEXTO DEVOLUCIONES / CANCELACIONES -->
+                  <li>
+                     <strong>{{ 'general.extra.returnTitle' | t}}</strong>{{ 'general.extra.returnText' | t}}<a href="{{ 'general.extra.linkReturnsInfo' | t }}" target="_blank" style="">{{ 'general.extra.clickToKnowMore' | t}}</a>
+                  	 <!-- CAMBIO: Para que el fondo oscuro aparezca al añadir producto a cart -->	
+                     <input type="button" class="action_button" value="{{ 'layout.general.close_window' | t}}" onclick="$('.fondoCartButton').css('display', 'none');$('.cart_container').removeClass('active_link');">
+                  </li>
+                  <!-- FIN CAMBIO: TEXTO DEVOLUCIONES / CANCELACIONES -->
               </ul>
             </form>
           </div>
@@ -203,13 +233,24 @@
       {% endif %}
 
       <ul class="menu right">
+        <!-- CAMBIO: Metemos aqui el menu_left (begin) -->
+        {% if section.settings.phone_number != blank %}
+          <li><a href="tel:+{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a></li>
+        {% endif %}
+        {% if section.settings.top_bar_menu != blank %}
+          {% for link in linklists[section.settings.top_bar_menu].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        {% endif %}
+        <!-- CAMBIO: Metemos aqui el menu_left (end) -->
         {% if settings.show_multiple_currencies %}
           <li>
             {% include 'currencies-switcher' %}
           </li>
         {% endif %}
         {% if shop.customer_accounts_enabled %}
-          <li>
+          <!-- CAMBIO: Cambiamos el background color de login -->
+          <li style="background-color: #9b8442">
             <a href="/account" class="icon-user" title="{{ 'layout.customer.my_account' | t }} {% if customer %}({{ customer.email }}){% endif %}"> <span>{% if customer %}{{ 'layout.customer.my_account' | t }}{% else %}{{ 'layout.customer.log_in' | t }}{% endif %}</span></a>
           </li>
         {% endif %}
@@ -295,6 +336,10 @@
     </div>
   </div>
 </header>
+
+<!-- CAMBIO: FONDO begin -->
+<div class="fondo" style="background-color: black; width: 100%; display: none; z-index: 100; position: absolute; opacity: 0.5;"></div>
+<!-- FONDO end -->
 
 <style>
   .main_nav div.logo a {
