@@ -67,6 +67,7 @@ Description: Shopify Theme (https://www.shopify.com/?ref=out-of-the-sandbox)
 
 $small: 480px;
 $medium: 768px;
+$aux: 1000px;
 $large: 769px;
 $larger: 960px;
 $xlarge: 1400px;
@@ -5919,7 +5920,8 @@ or wrap each row of columns in a <div class="row"> */
 }
 
 /* All Mobile Sizes (devices and browser) */
-  @media only screen and (max-width: 768px) {
+  /* CAMBIO: Hemos puesto 1000px (antes ponia 768px) para que no se monte el menu navigation */
+  @media only screen and (max-width: 1000px) {
     .article_image {
       padding-bottom: 0;
     }
@@ -6764,7 +6766,6 @@ div.product-details {
     font-size: {{ settings.slideshow_headline_size | divided_by: 2 }}px;
   }
 }
-  
 
 /* Home page - general
 ================================================== */

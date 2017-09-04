@@ -121,7 +121,9 @@
             <span class="cart_count">{{ cart.item_count }}</span>
           </a>
           <div class="cart_content animated fadeIn">
-            <div class="js-empty-cart__message {% if cart.item_count > 0 %}hidden{% endif %}">
+            <!-- CAMBIO: Metemos el boton 'close' en minicart -->
+            <a class="remodal-close" style="float:left; position:relative!important" onclick="$(this).parent().parent().removeClass('active_link'); $('.fondoCart').css('display','none'); $('.fondoCartButton').css('display','none')"></a>
+			<div class="js-empty-cart__message {% if cart.item_count > 0 %}hidden{% endif %}">
               <p class="empty_cart">{{ 'layout.general.empty_cart' | t }}</p>
             </div>
             <form action="/checkout" method="post" data-money-format="{{ shop.money_format }}" data-shop-currency="{{ shop.currency }}" data-shop-name="{{ shop.name | escape }}" class="js-cart_content__form {% if cart.item_count == 0 %}hidden{% endif %}">
@@ -222,8 +224,6 @@
                   <!-- CAMBIO: TEXTO DEVOLUCIONES / CANCELACIONES -->
                   <li>
                      <strong>{{ 'general.extra.returnTitle' | t}}</strong>{{ 'general.extra.returnText' | t}}<a href="{{ 'general.extra.linkReturnsInfo' | t }}" target="_blank" style="">{{ 'general.extra.clickToKnowMore' | t}}</a>
-                  	 <!-- CAMBIO: Para que el fondo oscuro aparezca al añadir producto a cart -->	
-                     <input type="button" class="action_button" value="{{ 'layout.general.close_window' | t}}" onclick="$('.fondoCartButton').css('display', 'none');$('.cart_container').removeClass('active_link');">
                   </li>
                   <!-- FIN CAMBIO: TEXTO DEVOLUCIONES / CANCELACIONES -->
               </ul>
@@ -249,7 +249,6 @@
           </li>
         {% endif %}
         {% if shop.customer_accounts_enabled %}
-          <!-- CAMBIO: Cambiamos el background color de login -->
           <li style="background-color: #9b8442">
             <a href="/account" class="icon-user" title="{{ 'layout.customer.my_account' | t }} {% if customer %}({{ customer.email }}){% endif %}"> <span>{% if customer %}{{ 'layout.customer.my_account' | t }}{% else %}{{ 'layout.customer.log_in' | t }}{% endif %}</span></a>
           </li>

@@ -44,7 +44,7 @@
   /* Para que en la vista movil los botones clear y view all se vean mejor */
   a.filter-clear {
     margin-right: 20px;
-    @media only screen and (max-width: 768px){
+    @media only screen and (max-width: 1000px){
       margin-top: -5px;
     }
   }
@@ -167,10 +167,10 @@
   }
 
 /* ------- CAMBIO: HEADER -------- */
-  
+  /* NAV en el pie del header */
 
 /*Para que en la vista "Ipad" las categorias no se monten*/
-  @media only screen and (min-width: 768px) and (max-width: 1215px){
+  @media only screen and (min-width: 1000px) and (max-width: 1215px){
     ul.menu.center {
       margin-left: 5px;
       margin-right: 5px;
@@ -186,7 +186,7 @@
     }
   }
 
-  /* NAV en el pie del header */
+
   .main_nav.clearfix.menu-position--inline.logo-align--left{
     position: relative;
   }
@@ -195,6 +195,7 @@
     bottom: 0;
     position: absolute;
     padding-top: 60px;
+    margin-left: 0px;
   }
 
  /*Mas espacio entre header y resto*/
@@ -222,7 +223,6 @@
   }
   .search_link {
     display: inline-block!important;
-    margin-left: 65px!important; //Lo alejamos un poco de nav
   }
   
   /* Damos al icono de busqueda un estilo de boton */
@@ -280,7 +280,12 @@
   /* En la vista movil no queremos que aparezcan links a otras plataformas*/
   @media only screen and (max-width: 768px){
     p.iguanaCountries{
-      display: none;
+    	display: none;
+    }    
+  }
+  @media only screen and (min-width: 768px) and (max-width: 1000px){
+    p.iguanaCountries{
+    	visibility: hidden;
     }    
   }
   
@@ -310,7 +315,7 @@
       font-weight: bold;
   }  
   /* Movil */  
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: 1000px){
     dl.caracteristicas{
       float: none;
       width: 100%;
@@ -318,7 +323,7 @@
   }  
   
 /*WHY-IGUANA: Responsive*/
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: 1000px){
     div.contenedor-why-iguana {
       height: 550px!important;
     }
@@ -376,7 +381,7 @@
   border-left: none;
  }
 
-@media only screen and (max-width: 768px){
+@media only screen and (max-width: 1000px){
   /* PARA QUE EN VISTA MOVIL TE PERMITA HACER SCROLL AL ABRIR EL MENU */
     body.is-active {
       overflow-y: visible; 
@@ -387,7 +392,7 @@
       margin-top: 2px;
     }
     /* En el menu de vista movil pondremos una linea encima de About us y Login*/
-    li a[href="/pages/about-us"], li a[href="/account/login"] {
+  li a[href="/pages/{{'general.extra.about-us'|t}}"], li a[href="/account/login"] {
       border-top: solid 2px #9b8442;
     }
 }
@@ -418,7 +423,7 @@
   }   
 
   /* Quitar descripcion de sugerencias en vista movil */
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: 1000px){
     div.as_magento_product_desc{
       display: none;
     }  
@@ -446,4 +451,16 @@
   /* Para que no salga Ecommerce Software by Shopify */
   .credits a[href*="https"] {
     display: none;
+  }
+
+  /* Quitar descripcion de quick view */
+  .js-regular-description {
+    display: none;
+  }
+
+  /* Evitar que se descoloque lupa de busqeda */
+  @media only screen and (min-width: 960px) and (max-width: 1000px) {
+    .icon-search.dropdown_link {
+      margin-right: 15px;
+    }
   }

@@ -5,7 +5,17 @@
 <!--[if IE 8 ]><html class="ie ie8" lang="{{ shop.locale }}"> <![endif]-->
 <!--[if IE 9 ]><html class="ie ie9" lang="{{ shop.locale }}"> <![endif]-->
 <!--[if (gte IE 10)|!(IE)]><!--><html lang="{{ shop.locale }}"> <!--<![endif]-->
-  <head>   
+  <head>  
+    
+	    <!-- Google Tag Manager -->		
+  <meta name="google-site-verification" content="{{'general.extra.google_site_verification_id' | t }}" />    		
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':		
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],		
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=		
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);		
+  })(window,document,'script','dataLayer','{{'general.extra.google_tag_manager_id' | t }}');</script>		
+  <!-- End Google Tag Manager -->
+    
     <meta charset="utf-8">
     <meta http-equiv="cleartype" content="on">
     <meta name="robots" content="index,follow">
@@ -79,6 +89,13 @@
   {% endif %}
 
   <body class="{{ template | replace: '.', '-' | handle }}">
+    
+	<!-- Google Tag Manager (noscript) -->		
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{'general.extra.google_tag_manager_id' | t }}"		
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>		
+    <!-- End Google Tag Manager (noscript) -->		
+    		
+    {% include 'google-remarketing' %}
     
     <div class="fondoPopUp" style="background-color: black;width: 100%; display: none; z-index: 100000;position: absolute;opacity: 0.5;"></div>
     <!-- Fondo mini cart -->
@@ -176,7 +193,7 @@
     {% include 'sweettooth-initializer' %}
 
   {% include 'sweettooth-tab-widget' %}
-
+  {% include 'social-login' %}
 </body>
 </html>
 {% endcapture %}
@@ -256,3 +273,4 @@
   </div>
 
 <!--  CONTACT FORM end -->
+
